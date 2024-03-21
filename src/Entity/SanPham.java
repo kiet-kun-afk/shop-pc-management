@@ -1,22 +1,39 @@
 package Entity;
 
 public class SanPham {
+	String MaSP;
 	String TenSP;
 	int DonGia;
 	int SoLuong;
-	String MaLoai;
-	String MaTH;
 	String MoTa;
 	String HinhSP;
-	String MaSP;
+	String MaLoai;
+	String MaTH;
 	String TenTH;
 	String TenLoaiSP;
+
+	public String getTenTH() {
+		return TenTH;
+	}
+
+	public void setTenTH(String tenTH) {
+		TenTH = tenTH;
+	}
+
+	public String getTenLoaiSP() {
+		return TenLoaiSP;
+	}
+
+	public void setTenLoaiSP(String tenLoaiSP) {
+		TenLoaiSP = tenLoaiSP;
+	}
 
 	public SanPham() {
 
 	}
 
-	public SanPham (String MaSP, String TenSP,int DonGia, int SoLuong, String MaLoai, String MaTH, String Mota, String HinhSP, String TenTH, String TenLoaiSP) {
+	public SanPham(String MaSP, String TenSP, int DonGia, int SoLuong, String MaLoai, String MaTH, String Mota,
+			String HinhSP) {
 		super();
 		this.MaSP = MaSP;
 		this.TenSP = TenSP;
@@ -26,9 +43,6 @@ public class SanPham {
 		this.MaTH = MaTH;
 		this.MoTa = Mota;
 		this.HinhSP = HinhSP;
-		this.TenTH = TenTH;
-		this.TenLoaiSP = TenLoaiSP;
-
 	}
 
 	public String getTenSP() {
@@ -45,16 +59,6 @@ public class SanPham {
 
 	public void setDonGia(int donGia) {
 		DonGia = donGia;
-	}
-
-
-
-	public String getTenTH() {
-		return TenTH;
-	}
-
-	public void setTenTH(String tenTH) {
-		TenTH = tenTH;
 	}
 
 	public int getSoLuong() {
@@ -104,22 +108,5 @@ public class SanPham {
 	public void setMaSP(String maSP) {
 		MaSP = maSP;
 	}
-
-	@Override
-	public String toString() {
-		return "SanPham [TenTH=" + TenTH + ", TenLoaiSP=" + TenLoaiSP + "]";
-	}
-
-	public String getTenLoaiSP() {
-		return TenLoaiSP;
-	}
-
-	public void setTenLoaiSP(String tenLoaiSP) {
-		TenLoaiSP = tenLoaiSP;
-	}
-
-
-
-
 
 }

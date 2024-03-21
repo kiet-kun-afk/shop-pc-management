@@ -1,36 +1,15 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.sql.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -43,8 +22,8 @@ import Utils.BatLoi;
 import Utils.JDBC;
 import Utils.TaoMa;
 
+@SuppressWarnings("serial")
 public class panelHoaDon extends JPanel {
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField txtIDHoaDon;
 	private JTextField txtHoTenKhach;
 	private JTextField txtSDT;
@@ -269,9 +248,9 @@ public class panelHoaDon extends JPanel {
 	String maCu = "";
 
 	void loadTable() {
-		String sql = "SELECT MaHD, NgayLap, HoaDon.MaNV, NhanVien.HoTen, sdtKH, KhachHang.HoTen, TongTien FROM HoaDon JOIN NhanVien ON HoaDon.MaNV = NhanVien.MaNV JOIN KhachHang ON HoaDon.sdtKH = KhachHang.SDT;";
+		String sql = "SELECT MaHD, NgayLap, HoaDon.maNhanVien, NhanVien.HoTen, KhachHang.SDT, KhachHang.HoTen, TongTien FROM HoaDon JOIN NhanVien ON HoaDon.maNhanVien = NhanVien.MaNV JOIN KhachHang ON HoaDon.maKhachHang = KhachHang.maKhachHang";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
@@ -338,7 +317,7 @@ public class panelHoaDon extends JPanel {
 			String sql = "INSERT INTO HoaDon(MaHD, NgayLap, MaNV, sdtKH, TongTien) VALUES ('" + maHD + "', '" + ngayLap
 					+ "', '" + maNV + "', '" + sdtKH + "', 0);";
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.executeUpdate();
 				ps.close();
@@ -355,7 +334,7 @@ public class panelHoaDon extends JPanel {
 	boolean checkMaHD(String input) {
 		String sql = "SELECT MaHD FROM HoaDon;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -372,30 +351,30 @@ public class panelHoaDon extends JPanel {
 		return false;
 	}
 
-//	boolean checkMaNV(String input) {
-//		String sql = "SELECT MaNV FROM NhanVien;";
-//		try {
-//			Connection con = DriverManager.getConnection(JDBC.url());
-//			PreparedStatement ps = con.prepareStatement(sql);
-//			ResultSet rs = ps.executeQuery();
-//			while (rs.next()) {
-//				if (rs.getString(1).equalsIgnoreCase(input)) {
-//					return true;
-//				}
-//			}
-//			rs.close();
-//			ps.close();
-//			con.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return false;
-//	}
+	// boolean checkMaNV(String input) {
+	// String sql = "SELECT MaNV FROM NhanVien;";
+	// try {
+	// Connection con = JDBC.getConnection();
+	// PreparedStatement ps = con.prepareStatement(sql);
+	// ResultSet rs = ps.executeQuery();
+	// while (rs.next()) {
+	// if (rs.getString(1).equalsIgnoreCase(input)) {
+	// return true;
+	// }
+	// }
+	// rs.close();
+	// ps.close();
+	// con.close();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// return false;
+	// }
 
 	boolean checkSDTkh(String input) {
 		String sql = "SELECT SDT FROM KhachHang;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -474,7 +453,7 @@ public class panelHoaDon extends JPanel {
 
 			}
 
-			File f = new File("C:\\Users\\non\\Desktop\\HoaDon.xlsx");
+			File f = new File("\\HoaDon.xlsx");
 
 			try {
 				FileOutputStream File = new FileOutputStream(f);

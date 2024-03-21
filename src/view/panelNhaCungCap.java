@@ -1,46 +1,29 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.util.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
 import Entity.NhaCungCap;
 import Utils.BatLoi;
 import Utils.JDBC;
 import Utils.TaoMa;
 
+@SuppressWarnings("serial")
 public class panelNhaCungCap extends JPanel {
 
 	private JTextField txtSDT;
 	private JTextField txtIDNCC;
 	private JTextField txtTenNCC;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField txtDiaChi;
 	private JTextField txtTim;
 
 	int current = -1;
 	int vitri = 0;
-	private String header[] = { "Mã nhà cung cấp", "Tên nhà cung cấp", "SDT", "Địa chỉ" };
-	private DefaultTableModel tblModel = new DefaultTableModel(header, 0);
 	private JTable table_1;
 	private JButton btnPrev;
 	private JButton btnNext;
@@ -74,7 +57,7 @@ public class panelNhaCungCap extends JPanel {
 				String diaChi = txtDiaChi.getText();
 				if (checkLoi(idNCC, tenNCC, sdt, diaChi)) {
 					try {
-						Connection con = DriverManager.getConnection(JDBC.url());
+						Connection con = JDBC.getConnection();
 						PreparedStatement ps = con.prepareStatement("insert into NhaCungCap values (?,?,?,?);");
 						ps.setString(1, idNCC);
 						ps.setString(2, tenNCC);
@@ -108,7 +91,7 @@ public class panelNhaCungCap extends JPanel {
 				String diaChi = txtDiaChi.getText();
 				if (checkLoiUpdate(idNCC, tenNCC, sdt, diaChi)) {
 					try {
-						Connection con = DriverManager.getConnection(JDBC.url());
+						Connection con = JDBC.getConnection();
 						PreparedStatement ps = con
 								.prepareStatement("update NhaCungCap set TenNCC=?,SDT=?,DiaChi=? where MaNCC=? ");
 						ps.setString(1, tenNCC);
@@ -341,7 +324,7 @@ public class panelNhaCungCap extends JPanel {
 
 	public void load_data() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement("select * from NhaCungCap");
 			ResultSet rs = ps.executeQuery();
 			arr.clear();
@@ -392,7 +375,7 @@ public class panelNhaCungCap extends JPanel {
 			LoadDataToControl(vitri);
 			table_1.setRowSelectionInterval(vitri, vitri);
 		} else {
-//			btnPrev.setEnabled(false);
+			// btnPrev.setEnabled(false);
 		}
 	}
 
@@ -402,7 +385,7 @@ public class panelNhaCungCap extends JPanel {
 			LoadDataToControl(vitri);
 			table_1.setRowSelectionInterval(vitri, vitri);
 		} else {
-//			btnNext.setEnabled(false);
+			// btnNext.setEnabled(false);
 		}
 	}
 
@@ -415,7 +398,7 @@ public class panelNhaCungCap extends JPanel {
 	public void TimKiem() {
 		String search = txtTim.getText();
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con
 					.prepareStatement("select * from NhaCungCap where TenNCC LIKE '%" + search + "%'");
 			ResultSet rs = ps.executeQuery();
@@ -446,7 +429,7 @@ public class panelNhaCungCap extends JPanel {
 	boolean checkMa(String input) {
 		String sql = "SELECT MaNCC FROM NhaCungCap;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

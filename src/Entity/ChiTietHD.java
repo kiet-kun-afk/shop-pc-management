@@ -1,9 +1,9 @@
 package Entity;
 
 public class ChiTietHD {
+	private String maHD;
 	private String maSP;
 	private int soLuong;
-	private String maHD;
 
 	public String getMaSP() {
 		return maSP;

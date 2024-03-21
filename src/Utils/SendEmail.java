@@ -20,8 +20,8 @@ public class SendEmail {
 			p.put("mail.smtp.starttls.enable", "true");
 			p.put("mail.smtp.host", "smtp.gmail.com");
 			p.put("mail.smtp.port", 587);
-			String user = "lulovekhe@gmail.com";
-			String pass = "iyvvheohwhghpcot";
+			String user = "kietmnvps27065@fpt.edu.vn";
+			String pass = "rvgn lriz tjmu wcid";
 			Session s = Session.getInstance(p, new javax.mail.Authenticator() {
 				@Override
 				protected PasswordAuthentication getPasswordAuthentication() {

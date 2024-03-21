@@ -9,6 +9,7 @@ import javax.swing.border.*;
 import Utils.SendEmail;
 import Utils.XImage;
 
+@SuppressWarnings("serial")
 public class QuenMatKhaub2 extends JFrame {
 
 	private JPanel contentPane;

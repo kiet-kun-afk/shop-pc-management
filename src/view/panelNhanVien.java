@@ -1,30 +1,12 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.util.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
 import Entity.NhanVien;
 import Utils.BatLoi;
@@ -32,6 +14,7 @@ import Utils.JDBC;
 import Utils.Mahoa;
 import Utils.TaoMa;
 
+@SuppressWarnings("serial")
 public class panelNhanVien extends JPanel {
 
 	private JTextField txtSDT;
@@ -363,7 +346,7 @@ public class panelNhanVien extends JPanel {
 
 	public void load_data() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			String sqlInsert = "select * from NhanVien WHERE TrangThai = 0;";
 			ResultSet rs = st.executeQuery(sqlInsert);
@@ -404,7 +387,7 @@ public class panelNhanVien extends JPanel {
 		String email = txtEmail.getText();
 		if (checkLoiUpdate(ma, ten, sdt, email, matKhau)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement(
 						"UPDATE NhanVien SET  HoTen = ?, MatKhau = ?, SDT = ?, VaiTro = ?, TrangThai = ?, Email = ? where MaNV = ?");
 				ps.setString(1, ten);
@@ -439,7 +422,7 @@ public class panelNhanVien extends JPanel {
 		String email = txtEmail.getText();
 		if (checkLoi(ma, ten, sdt, email, matKhau)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement("insert into NhanVien values (?,?,?,?,?,?,?);");
 				ps.setString(1, ma);
 				ps.setString(2, ten);
@@ -465,7 +448,7 @@ public class panelNhanVien extends JPanel {
 
 	public boolean TimKiem() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con
 					.prepareStatement("select * from NhanVien WHERE HoTen LIKE '%" + txtTim.getText() + "%';");
 			ResultSet rs = ps.executeQuery();
@@ -544,7 +527,7 @@ public class panelNhanVien extends JPanel {
 	boolean checkMa(String input) {
 		String sql = "SELECT MaNV FROM NhanVien;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -564,7 +547,7 @@ public class panelNhanVien extends JPanel {
 	boolean checkEmail(String input) {
 		String sql = "SELECT Email FROM NhanVien;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -584,7 +567,7 @@ public class panelNhanVien extends JPanel {
 	boolean checkSDT(String input) {
 		String sql = "SELECT SDT FROM NhanVien;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

@@ -1,33 +1,17 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
 import Entity.ChiTietHD;
 import Utils.BatLoi;
 import Utils.JDBC;
 import Utils.XImage;
-
+@SuppressWarnings("serial")
 public class ChiTietHoaDon extends JFrame {
 
 	private JPanel contentPane;
@@ -280,7 +264,7 @@ public class ChiTietHoaDon extends JFrame {
 	void loadArr(String input) {
 		String sql = "SELECT * FROM HoaDonChiTiet WHERE MaHD = '" + input + "';";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
@@ -378,7 +362,7 @@ public class ChiTietHoaDon extends JFrame {
 			String sql = "INSERT INTO HoaDonChiTiet(SoLuong, MaSP, MaHD) VALUES('" + soLuong + "', '" + maSP + "', '"
 					+ maHD + "');";
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.executeUpdate();
 				CapNhatSoLuongSP(soLuong, maSP);
@@ -396,13 +380,13 @@ public class ChiTietHoaDon extends JFrame {
 			lblNotf.setText("");
 		}
 	}
-	
+
 	int conLai = 0;
-	
+
 	boolean checkMaSP(String input) {
 		String sql = "SELECT MaSP, SoLuong FROM SanPham;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -429,7 +413,7 @@ public class ChiTietHoaDon extends JFrame {
 		String sql = "SELECT hdct.SoLuong, sp.DonGia FROM HoaDonChiTiet AS hdct INNER JOIN SanPham AS sp ON hdct.MaSP = sp.MaSP WHERE hdct.MaHD = '"
 				+ input + "';";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -448,7 +432,7 @@ public class ChiTietHoaDon extends JFrame {
 	void capNhatTongTien(String input) {
 		String sql = "UPDATE HoaDon SET TongTien = '" + tongTien + "' WHERE MaHD ='" + input + "';";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.executeUpdate();
 			lblTongTien.setText("" + tongTien / 1000 + "K vnd");
@@ -462,7 +446,7 @@ public class ChiTietHoaDon extends JFrame {
 
 	void CapNhatSoLuongSP(int soLuong, String maSP) {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement("DECLARE @x INT; SET @x = '" + soLuong
 					+ "'; UPDATE SanPham SET SoLuong = SoLuong - @x WHERE MaSP = '" + maSP + "';");
 			ps.executeUpdate();

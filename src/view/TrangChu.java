@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -20,7 +19,8 @@ import javax.swing.WindowConstants;
 import Utils.JDBC;
 import Utils.XImage;
 
-public class Main extends JFrame {
+@SuppressWarnings("serial")
+public class TrangChu extends JFrame {
 
 	private JPanel contentPane;
 	private panelNhanVien qlNhanVien;
@@ -32,10 +32,9 @@ public class Main extends JFrame {
 	private panelNhaCungCap qlNhaCungCap;
 	private panelThuongHieu qlThuongHieu;
 	private panelKhuyenMai qlKhuyenMai;
-	private panelThongKe qlThongKe;
 	private DoiMatKhau doiMatKhau;
 
-	public Main(String id) {
+	public TrangChu(String id) {
 		setIconImage(XImage.APP_ICON);
 		setBackground(new Color(119, 136, 153));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -56,7 +55,6 @@ public class Main extends JFrame {
 		qlNhaCungCap = new panelNhaCungCap();
 		qlThuongHieu = new panelThuongHieu();
 		qlKhuyenMai = new panelKhuyenMai();
-		qlThongKe = new panelThongKe();
 		doiMatKhau = new DoiMatKhau(id);
 
 		JPanel paneMenu = new JPanel();
@@ -66,7 +64,7 @@ public class Main extends JFrame {
 		paneMenu.setLayout(null);
 
 		JLabel lblIconLogo = new JLabel("");
-		lblIconLogo.setIcon(new ImageIcon(Main.class.getResource("/res/Logo4.png")));
+		lblIconLogo.setIcon(new ImageIcon(TrangChu.class.getResource("/res/Logo4.png")));
 		lblIconLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIconLogo.setBounds(10, 11, 323, 193);
 		paneMenu.add(lblIconLogo);
@@ -96,7 +94,7 @@ public class Main extends JFrame {
 		paneNhanVien.add(lblNhanVien);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(Main.class.getResource("/res/Users.png")));
+		lblNewLabel.setIcon(new ImageIcon(TrangChu.class.getResource("/res/Users.png")));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(55, 0, 50, 50);
 		paneNhanVien.add(lblNewLabel);
@@ -124,7 +122,7 @@ public class Main extends JFrame {
 
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setIcon(new ImageIcon(Main.class.getResource("/res/User group.png")));
+		lblNewLabel_1.setIcon(new ImageIcon(TrangChu.class.getResource("/res/User group.png")));
 		lblNewLabel_1.setBounds(55, 0, 50, 50);
 		panelKhachHang.add(lblNewLabel_1);
 
@@ -150,7 +148,7 @@ public class Main extends JFrame {
 		panelPhieuNhap.add(lblPhieuNhap);
 
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(Main.class.getResource("/res/Numbered list.png")));
+		lblNewLabel_2.setIcon(new ImageIcon(TrangChu.class.getResource("/res/Numbered list.png")));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setBounds(55, 0, 50, 50);
 		panelPhieuNhap.add(lblNewLabel_2);
@@ -177,7 +175,7 @@ public class Main extends JFrame {
 		panelSanPham.add(lblSanPham);
 
 		JLabel lblNewLabel_3 = new JLabel("");
-		lblNewLabel_3.setIcon(new ImageIcon(Main.class.getResource("/res/computer.png")));
+		lblNewLabel_3.setIcon(new ImageIcon(TrangChu.class.getResource("/res/computer.png")));
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setBounds(55, 0, 50, 50);
 		panelSanPham.add(lblNewLabel_3);
@@ -207,7 +205,7 @@ public class Main extends JFrame {
 		panelNhaCungCap.add(lblNhaCungCap);
 
 		JLabel lblNewLabel_7 = new JLabel("");
-		lblNewLabel_7.setIcon(new ImageIcon(Main.class.getResource("/res/business_user.png")));
+		lblNewLabel_7.setIcon(new ImageIcon(TrangChu.class.getResource("/res/business_user.png")));
 		lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_7.setBounds(55, 0, 50, 50);
 		panelNhaCungCap.add(lblNewLabel_7);
@@ -237,7 +235,7 @@ public class Main extends JFrame {
 		paneThuongHieu.add(lblThuongHieu);
 
 		JLabel lblNewLabel_6 = new JLabel("");
-		lblNewLabel_6.setIcon(new ImageIcon(Main.class.getResource("/res/Monitor.png")));
+		lblNewLabel_6.setIcon(new ImageIcon(TrangChu.class.getResource("/res/Monitor.png")));
 		lblNewLabel_6.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_6.setBounds(55, 0, 50, 50);
 		paneThuongHieu.add(lblNewLabel_6);
@@ -267,7 +265,7 @@ public class Main extends JFrame {
 		panelLoaiSanPham.add(lblLoaiSanPham);
 
 		JLabel lblNewLabel_5 = new JLabel("");
-		lblNewLabel_5.setIcon(new ImageIcon(Main.class.getResource("/res/computers.png")));
+		lblNewLabel_5.setIcon(new ImageIcon(TrangChu.class.getResource("/res/computers.png")));
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_5.setBounds(55, 0, 50, 50);
 		panelLoaiSanPham.add(lblNewLabel_5);
@@ -294,7 +292,7 @@ public class Main extends JFrame {
 		panelHoaDon.add(lblHoaDon);
 
 		JLabel lblNewLabel_4 = new JLabel("");
-		lblNewLabel_4.setIcon(new ImageIcon(Main.class.getResource("/res/Text.png")));
+		lblNewLabel_4.setIcon(new ImageIcon(TrangChu.class.getResource("/res/Text.png")));
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4.setBounds(55, 0, 50, 50);
 		panelHoaDon.add(lblNewLabel_4);
@@ -324,7 +322,7 @@ public class Main extends JFrame {
 		panelKhuyenMai.add(lblKhuyenMai);
 
 		JLabel lblNewLabel_8 = new JLabel("");
-		lblNewLabel_8.setIcon(new ImageIcon(Main.class.getResource("/res/shopping_cart.png")));
+		lblNewLabel_8.setIcon(new ImageIcon(TrangChu.class.getResource("/res/shopping_cart.png")));
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_8.setBounds(55, 0, 50, 50);
 		panelKhuyenMai.add(lblNewLabel_8);
@@ -335,7 +333,7 @@ public class Main extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (TrangThai(id)) {
 					if (VaiTro(id)) {
-						menuClicked(qlThongKe);
+						JOptionPane.showMessageDialog(null, "Chức năng đang bảo trì, xin lỗi vì sự bất tiện này.");
 					} else
 						JOptionPane.showMessageDialog(null, "Bạn không phải quản lý, không được phép thao tác.");
 				} else
@@ -354,7 +352,7 @@ public class Main extends JFrame {
 		panelThongKe.add(lblThongke);
 
 		JLabel lblNewLabel_9 = new JLabel("");
-		lblNewLabel_9.setIcon(new ImageIcon(Main.class.getResource("/res/Bar chart.png")));
+		lblNewLabel_9.setIcon(new ImageIcon(TrangChu.class.getResource("/res/Bar chart.png")));
 		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_9.setBounds(55, 0, 50, 50);
 		panelThongKe.add(lblNewLabel_9);
@@ -378,7 +376,7 @@ public class Main extends JFrame {
 		panelDoiMatKhau.add(lblDoiMatKhau);
 
 		JLabel lblNewLabel_10 = new JLabel("");
-		lblNewLabel_10.setIcon(new ImageIcon(Main.class.getResource("/res/Key.png")));
+		lblNewLabel_10.setIcon(new ImageIcon(TrangChu.class.getResource("/res/Key.png")));
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_10.setBounds(55, 0, 50, 50);
 		panelDoiMatKhau.add(lblNewLabel_10);
@@ -389,7 +387,7 @@ public class Main extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (JOptionPane.showConfirmDialog(null, "Bạn có muốn đăng xuất?", "Xác nhận",
 						JOptionPane.YES_NO_OPTION) == 0) {
-					Main.this.dispose();
+					TrangChu.this.dispose();
 					new DangNhap().setVisible(true);
 				}
 			}
@@ -406,7 +404,7 @@ public class Main extends JFrame {
 		panelDangXuat.add(lblDangXuat);
 
 		JLabel lblNewLabel_11 = new JLabel("");
-		lblNewLabel_11.setIcon(new ImageIcon(Main.class.getResource("/res/shut_down.png")));
+		lblNewLabel_11.setIcon(new ImageIcon(TrangChu.class.getResource("/res/shut_down.png")));
 		lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_11.setBounds(55, 0, 50, 50);
 		panelDangXuat.add(lblNewLabel_11);
@@ -422,7 +420,7 @@ public class Main extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				if (JOptionPane.showConfirmDialog(null, "Bạn có muốn thoát?", "Xác nhận",
 						JOptionPane.YES_NO_OPTION) == 0) {
-					Main.this.dispose();
+					TrangChu.this.dispose();
 				}
 			}
 
@@ -451,7 +449,6 @@ public class Main extends JFrame {
 		panelContent.add(qlNhaCungCap);
 		panelContent.add(qlThuongHieu);
 		panelContent.add(qlKhuyenMai);
-		panelContent.add(qlThongKe);
 		panelContent.add(doiMatKhau);
 		contentPane.add(panelContent);
 		lblIconLogo.addMouseListener(new MouseAdapter() {
@@ -464,16 +461,16 @@ public class Main extends JFrame {
 	}
 
 	boolean TrangThai(String input) {
-		String sql = "SELECT TrangThai FROM NhanVien WHERE MaNV = '" + input + "';";
+		String sql = "SELECT TrangThai FROM NhanVien WHERE Sdt = '" + input + "';";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				if (rs.getBoolean(1)) {
-					return false;
-				} else {
 					return true;
+				} else {
+					return false;
 				}
 			}
 			rs.close();
@@ -486,9 +483,9 @@ public class Main extends JFrame {
 	}
 
 	boolean VaiTro(String input) {
-		String sql = "SELECT VaiTro FROM NhanVien WHERE MaNV = '" + input + "';";
+		String sql = "SELECT VaiTro FROM NhanVien WHERE Sdt = '" + input + "';";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -517,7 +514,6 @@ public class Main extends JFrame {
 		qlNhaCungCap.setVisible(false);
 		qlThuongHieu.setVisible(false);
 		qlKhuyenMai.setVisible(false);
-		qlThongKe.setVisible(false);
 		doiMatKhau.setVisible(false);
 		panel.setVisible(true);
 	}

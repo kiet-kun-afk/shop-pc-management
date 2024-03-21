@@ -1,34 +1,19 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.util.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
 import Entity.LoaiSP;
 import Utils.BatLoi;
 import Utils.JDBC;
 import Utils.TaoMa;
 
+@SuppressWarnings("serial")
 public class panelLoaiSanPham extends JPanel {
 	ArrayList<LoaiSP> list = new ArrayList<>();
 	int current = 0;
@@ -36,7 +21,6 @@ public class panelLoaiSanPham extends JPanel {
 
 	private JTextField txtIDLoai;
 	private JTextField txtTenLoai;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTable table;
 	private JTextField txtTim;
 	private JLabel lblLoiMa;
@@ -252,7 +236,7 @@ public class panelLoaiSanPham extends JPanel {
 
 	public void load_data() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			String sqlInsert = "select * from LoaiSP";
 			ResultSet rs = st.executeQuery(sqlInsert);
@@ -281,7 +265,7 @@ public class panelLoaiSanPham extends JPanel {
 		String ten = txtTenLoai.getText();
 		if (checkLoi(ma, ten)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement("insert into LoaiSP values (?,?);");
 				ps.setString(1, ma);
 				ps.setString(2, ten);
@@ -304,7 +288,7 @@ public class panelLoaiSanPham extends JPanel {
 
 	public void TimKiem() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con
 					.prepareStatement("select * from LoaiSP WHERE TenLoai LIKE '%" + txtTim.getText() + "%';");
 			ResultSet rs = ps.executeQuery();
@@ -331,7 +315,7 @@ public class panelLoaiSanPham extends JPanel {
 		String ten = txtTenLoai.getText();
 		if (checkLoiUpdate(ma, ten)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement("UPDATE LoaiSP SET TenLoai = ? where MaLoai = ?");
 				ps.setString(2, ma);
 				ps.setString(1, ten);
@@ -388,7 +372,7 @@ public class panelLoaiSanPham extends JPanel {
 	boolean checkMa(String input) {
 		String sql = "SELECT MaLoai FROM LoaiSP;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

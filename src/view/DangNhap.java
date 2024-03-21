@@ -1,46 +1,20 @@
 package view;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.font.TextAttribute;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Map;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.sql.*;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-import javax.swing.border.EmptyBorder;
+import javax.imageio.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.io.*;
 
 import Utils.JDBC;
 import Utils.Mahoa;
 import Utils.XImage;
 
+@SuppressWarnings("serial")
 public class DangNhap extends JFrame {
 
 	private JPanel contentPane;
@@ -99,9 +73,6 @@ public class DangNhap extends JFrame {
 		contentPane.add(lblHinh);
 
 		JLabel lblQuenMK = new JLabel("Fogot password");
-		Font font = lblQuenMK.getFont();
-		Map attributes = font.getAttributes();
-		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 		lblQuenMK.setFont(new Font("Dialog", Font.ITALIC, 14));
 		lblQuenMK.addMouseListener(new MouseAdapter() {
 			@Override
@@ -307,16 +278,16 @@ public class DangNhap extends JFrame {
 		String userName = txtUserName.getText();
 		String password = Mahoa.CC(new String(txtPassword.getPassword()));
 		String maNV = "";
-		String sql = "SELECT SDT, MatKhau, MaNV FROM NhanVien;";
+		String sql = "SELECT Sdt, MatKhau FROM NhanVien";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				if (rs.getString(1).equalsIgnoreCase(userName)) {
-					if (rs.getString(2).equalsIgnoreCase(password)) {
+				if (rs.getString(1).equals(userName)) {
+					if (rs.getString(2).equals(password)) {
 						check = true;
-						maNV = rs.getString(3);
+						maNV = rs.getString(1);
 					}
 				}
 			}
@@ -328,7 +299,7 @@ public class DangNhap extends JFrame {
 		}
 		if (check) {
 			lblBaoLoi.setText("");
-			new Main(maNV).setVisible(true);
+			new TrangChu(maNV).setVisible(true);
 			dispose();
 		} else {
 			lblBaoLoi.setText("Incorrect username or password.");

@@ -1,31 +1,17 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-import javax.swing.border.EmptyBorder;
+import javax.swing.*;
+import javax.swing.border.*;
 
 import Utils.BatLoi;
 import Utils.JDBC;
 import Utils.XImage;
 
+@SuppressWarnings("serial")
 public class QuenMatKhaub1 extends JFrame {
 
 	private JPanel contentPane;
@@ -171,7 +157,7 @@ public class QuenMatKhaub1 extends JFrame {
 		String email = txtEmail.getText();
 		if (BatLoi.Email(email)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement(sql);
 				ResultSet rs = ps.executeQuery();
 				while (rs.next()) {

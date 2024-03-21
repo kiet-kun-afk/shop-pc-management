@@ -32,10 +32,4 @@ public class ChiTietKM {
 		TiLeKM = tiLeKM;
 	}
 
-
-
-
-
-
-
 }

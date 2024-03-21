@@ -1,33 +1,19 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.util.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
 import Entity.ThuongHieu;
 import Utils.BatLoi;
 import Utils.JDBC;
 import Utils.TaoMa;
 
+@SuppressWarnings({ "serial", "unused" })
 public class panelThuongHieu extends JPanel {
 
 	private JTextField txtEmail;
@@ -69,7 +55,7 @@ public class panelThuongHieu extends JPanel {
 				String sql = "insert into ThuongHieu values ('" + idTH + "', N'" + tenTH + "', '" + email + "');";
 				if (checkLoi(idTH, tenTH, email)) {
 					try {
-						Connection con = DriverManager.getConnection(JDBC.url());
+						Connection con = JDBC.getConnection();
 						PreparedStatement ps = con.prepareStatement(sql);
 						ps.executeUpdate();
 						ps.close();
@@ -100,7 +86,7 @@ public class panelThuongHieu extends JPanel {
 				String email = txtEmail.getText();
 				if (checkLoiUpdate(idTH, tenTH, email)) {
 					try {
-						Connection con = DriverManager.getConnection(JDBC.url());
+						Connection con = JDBC.getConnection();
 						PreparedStatement ps = con
 								.prepareStatement("update ThuongHieu set TenTH=?,Email=? where MaTH=? ");
 						ps.setString(1, tenTH);
@@ -315,7 +301,7 @@ public class panelThuongHieu extends JPanel {
 
 	public void load_data() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement("select * from ThuongHieu");
 			ResultSet rs = ps.executeQuery();
 			arr.clear();
@@ -405,7 +391,7 @@ public class panelThuongHieu extends JPanel {
 
 	public void TimKiem() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con
 					.prepareStatement("SELECT * FROM ThuongHieu WHERE TenTH LIKE '%" + txtTim.getText() + "%';");
 			ResultSet rs = ps.executeQuery();
@@ -431,7 +417,7 @@ public class panelThuongHieu extends JPanel {
 	boolean checkMa(String input) {
 		String sql = "SELECT MaTH FROM ThuongHieu;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

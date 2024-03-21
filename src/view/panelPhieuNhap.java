@@ -1,31 +1,13 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.sql.*;
+import java.util.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -38,6 +20,7 @@ import Utils.BatLoi;
 import Utils.JDBC;
 import Utils.TaoMa;
 
+@SuppressWarnings("serial")
 public class panelPhieuNhap extends JPanel {
 	private JTextField txtNCC;
 	private JTextField txtIDPhieu;
@@ -324,9 +307,9 @@ public class panelPhieuNhap extends JPanel {
 
 	void loadTable() {
 		arr.clear();
-		String sql = "SELECT MaPhieu, NgayNhap, pn.MaNCC, pn.MaNV, nv.HoTen, ncc.TenNCC FROM PhieuNhap AS pn JOIN NhaCungCap AS ncc ON pn.MaNCC = ncc.MaNCC JOIN NhanVien AS nv ON pn.MaNV = nv.MaNV";
+		String sql = "SELECT maPhieuNhap, ngayNhapHang, pn.MaNCC, pn.maNhanVien, nv.HoTen, ncc.TenNCC FROM PhieuNhap AS pn JOIN NhaCungCap AS ncc ON pn.MaNCC = ncc.MaNCC JOIN NhanVien AS nv ON pn.maNhanVien = nv.MaNV";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
@@ -371,10 +354,11 @@ public class panelPhieuNhap extends JPanel {
 		String nCC = txtNCC.getText();
 		String maNV = txtIDNhanVien.getText();
 		if (checkLoi(maPhieu, ngayNhap, nCC, maNV)) {
-			String sql = "INSERT INTO PhieuNhap(MaPhieu, NgayNhap, MaNCC, MaNV) VALUES('" + maPhieu + "', '" + ngayNhap
+			String sql = "INSERT INTO PhieuNhap(maPhieuNhap, ngayNhapHang, maNCC, maNhanVien) VALUES('" + maPhieu
+					+ "', '" + ngayNhap
 					+ "', '" + nCC + "', '" + maNV + "');";
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement(sql);
 				int kq = ps.executeUpdate();
 				if (kq == 1) {
@@ -400,9 +384,10 @@ public class panelPhieuNhap extends JPanel {
 		String maNV = txtIDNhanVien.getText();
 		if (checkLoiUpdate(maPhieu, ngayNhap, nCC, maNV)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con
-						.prepareStatement("UPDATE PhieuNhap SET NgayNhap = ?, MaNCC = ?, MaNV = ? Where  MaPhieu = ?");
+						.prepareStatement(
+								"UPDATE PhieuNhap SET ngayNhapHang = ?, maNCC = ?, maNhanVien = ? Where maPhieuNhap = ?");
 				ps.setString(1, ngayNhap);
 				ps.setString(2, nCC);
 				ps.setString(3, maNV);
@@ -474,7 +459,7 @@ public class panelPhieuNhap extends JPanel {
 	boolean checkMaNV(String input) {
 		String sql = "SELECT MaNV FROM NhanVien;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -492,9 +477,9 @@ public class panelPhieuNhap extends JPanel {
 	}
 
 	boolean checkMaPhieuNhap(String input) {
-		String sql = "SELECT MaPhieu FROM PhieuNhap;";
+		String sql = "SELECT maPhieuNhap FROM PhieuNhap;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -557,9 +542,9 @@ public class panelPhieuNhap extends JPanel {
 	public boolean find() {
 		id = txtTim.getText();
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(
-					"SELECT MaPhieu, NgayNhap, pn.MaNCC, pn.MaNV, nv.HoTen, ncc.TenNCC FROM PhieuNhap AS pn JOIN NhaCungCap AS ncc ON pn.MaNCC = ncc.MaNCC JOIN NhanVien AS nv ON pn.MaNV = nv.MaNV WHERE MaPhieu LIKE '%"
+					"SELECT maPhieuNhap, ngayNhapHang, pn.maNCC, pn.maNhanVien, nv.HoTen, ncc.TenNCC FROM PhieuNhap AS pn JOIN NhaCungCap AS ncc ON pn.MaNCC = ncc.MaNCC JOIN NhanVien AS nv ON pn.maNhanVien = nv.MaNV WHERE MaPhieu LIKE '%"
 							+ txtTim.getText() + "%'");
 			ResultSet rs = ps.executeQuery();
 			arr.clear();
@@ -613,7 +598,7 @@ public class panelPhieuNhap extends JPanel {
 				cell.setCellValue(arr.get(i).getTenNhanVien());
 			}
 
-			File f = new File("C:\\Users\\non\\Desktop\\PhieuNhap.xlsx");
+			File f = new File("/PhieuNhap.xlsx");
 
 			try {
 				FileOutputStream File = new FileOutputStream(f);

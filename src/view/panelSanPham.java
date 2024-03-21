@@ -1,43 +1,16 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
+import java.nio.file.*;
+import java.sql.*;
+import java.util.*;
 
-import javax.imageio.ImageIO;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.imageio.*;
+import javax.swing.*;
+import javax.swing.table.*;
 
 import Entity.LoaiSP;
 import Entity.SanPham;
@@ -45,6 +18,7 @@ import Utils.BatLoi;
 import Utils.JDBC;
 import Utils.TaoMa;
 
+@SuppressWarnings({ "serial", "rawtypes", "unchecked" })
 public class panelSanPham extends JPanel {
 	private JTextField txtID;
 	private JTextField txtName;
@@ -350,7 +324,7 @@ public class panelSanPham extends JPanel {
 
 	public void load_data() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			String sql = "select MaSP, TenSP, DonGia, LoaiSP.MaLoai, ThuongHieu.MaTH, SoLuong ,Mota, HinhSP, LoaiSP.TenLoai, ThuongHieu.TenTH from SanPham inner join LoaiSP on LoaiSP.MaLoai = SanPham.MaLoai inner join ThuongHieu on ThuongHieu.MaTH = SanPham.MaTH;";
 			ResultSet rs = st.executeQuery(sql);
@@ -387,7 +361,7 @@ public class panelSanPham extends JPanel {
 		String moTa = txtDescribe.getText();
 		if (checkLoi(ma, ten, gia, moTa)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement pt = con.prepareStatement(
 						"insert into SanPham(MaSP,TenSP,DonGia,MaLoai,MaTH,Mota,HinhSP,SoLuong) Values (?,?,?,?,?,?,?,0);");
 				pt.setString(1, ma);
@@ -414,7 +388,7 @@ public class panelSanPham extends JPanel {
 		String moTa = txtDescribe.getText();
 		if (checkLoiUpdate(ma, ten, gia, moTa)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement(
 						"UPDATE SanPham SET TenSP = ?, DonGia = ?, MaLoai = ?, MaTH = ?, Mota = ?, HinhSP = ? where MaSP = ?");
 				ps.setString(1, ten);
@@ -441,7 +415,7 @@ public class panelSanPham extends JPanel {
 
 	public void TimKiem() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(
 					"select masp, tensp, soluong, tenloai, tenth from SanPham as sp join loaisp as loai on sp.maloai = loai.maloai join ThuongHieu as th on sp.MaTH = th.MaTH WHERE tensp like ?");
 			ps.setString(1, "%" + txtTim.getText() + "%");
@@ -518,7 +492,7 @@ public class panelSanPham extends JPanel {
 		DefaultComboBoxModel cbbLoai = (DefaultComboBoxModel) cboLoai.getModel();
 		cbbLoai.removeAllElements();
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			String url = "Select * from LoaiSP";
 			ResultSet rs = st.executeQuery(url);
@@ -544,7 +518,7 @@ public class panelSanPham extends JPanel {
 		DefaultComboBoxModel cbbTH = (DefaultComboBoxModel) cboHieu.getModel();
 		cbbTH.removeAllElements();
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			String url = "Select MaTH, TenTH from ThuongHieu ";
 			ResultSet rs = st.executeQuery(url);
@@ -560,7 +534,6 @@ public class panelSanPham extends JPanel {
 				cbbTH.addElement(sanPham.getTenTH());
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -615,7 +588,7 @@ public class panelSanPham extends JPanel {
 	boolean checkMa(String input) {
 		String sql = "SELECT MaSP FROM SanPham;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

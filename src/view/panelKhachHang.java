@@ -1,33 +1,18 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.util.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
 import Entity.KhachHang;
 import Utils.BatLoi;
 import Utils.JDBC;
 
+@SuppressWarnings("serial")
 public class panelKhachHang extends JPanel {
 
 	ArrayList<KhachHang> list = new ArrayList<>();
@@ -37,7 +22,6 @@ public class panelKhachHang extends JPanel {
 	private JTextField txtDiaChi;
 	private JTextField txtSDT;
 	private JTextField txtName;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTable table;
 	private JTextField txtEmail;
 	private JTextField txtTim;
@@ -224,16 +208,16 @@ public class panelKhachHang extends JPanel {
 				LoadDataToControl(vitri);
 			}
 		});
-//		table.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//                            current = table.getSelectedRow();
-//                            txtSDT.setText(table.getValueAt(current, 0).toString());
-//                            txtName.setText(table.getValueAt(current, 1).toString());
-//                            txtDiaChi.setText(table.getValueAt(current, 3).toString());
-//                            txtEmail.setText(table.getValueAt(current, 4).toString());
-//			}
-//		});
+		// table.addMouseListener(new MouseAdapter() {
+		// @Override
+		// public void mouseClicked(MouseEvent e) {
+		// current = table.getSelectedRow();
+		// txtSDT.setText(table.getValueAt(current, 0).toString());
+		// txtName.setText(table.getValueAt(current, 1).toString());
+		// txtDiaChi.setText(table.getValueAt(current, 3).toString());
+		// txtEmail.setText(table.getValueAt(current, 4).toString());
+		// }
+		// });
 		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i",
 				"H\u1ECD t\u00EAn", "\u0110\u1ECBa ch\u1EC9", "Email" }));
 		scrollPane.setViewportView(table);
@@ -309,7 +293,7 @@ public class panelKhachHang extends JPanel {
 
 	public void load_data() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			String sqlInsert = "select * from KhachHang";
 			ResultSet rs = st.executeQuery(sqlInsert);
@@ -342,7 +326,7 @@ public class panelKhachHang extends JPanel {
 		String email = txtEmail.getText();
 		if (checkLoiUpdate(sdt, ten, email, diaChi)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con
 						.prepareStatement("UPDATE KhachHang SET  HoTen = ?, DiaChi = ?, Email = ? where SDT = ?");
 				ps.setString(1, ten);
@@ -371,7 +355,7 @@ public class panelKhachHang extends JPanel {
 		String diaChi = txtDiaChi.getText();
 		if (checkLoi(sdt, ten, email, diaChi)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement("insert into KhachHang values (?,?,?,?);");
 				ps.setString(1, sdt);
 				ps.setString(2, ten);
@@ -394,7 +378,7 @@ public class panelKhachHang extends JPanel {
 
 	public boolean TimKiem() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con
 					.prepareStatement("select * from KhachHang WHERE SDT LIKE '%" + txtTim.getText() + "%'");
 			ResultSet rs = ps.executeQuery();
@@ -458,7 +442,7 @@ public class panelKhachHang extends JPanel {
 	boolean checkMa(String input) {
 		String sql = "SELECT SDT FROM KhachHang;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

@@ -1,39 +1,25 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.text.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
+
+import javax.swing.*;
+import javax.swing.table.*;
+
+import com.toedter.calendar.*;
 
 import Entity.KhuyenMai;
 import Utils.BatLoi;
 import Utils.JDBC;
 import Utils.Mahoa;
 import Utils.TaoMa;
-import com.toedter.calendar.JDateChooser;
 
+@SuppressWarnings("serial")
 public class panelKhuyenMai extends JPanel {
 
 	ArrayList<KhuyenMai> list = new ArrayList<>();
@@ -42,7 +28,6 @@ public class panelKhuyenMai extends JPanel {
 
 	private JTextField txtIDKhuyenMai;
 	private JTextField txtTenKM;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTable table;
 	private JTextField txtTim;
 	private JLabel lblEnd;
@@ -336,15 +321,15 @@ public class panelKhuyenMai extends JPanel {
 
 	public void load_data() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			String sqlInsert = "select * from KhuyenMai";
 			ResultSet rs = st.executeQuery(sqlInsert);
 			list.clear();
 			while (rs.next()) {
 				KhuyenMai km = new KhuyenMai();
-				km.setMaKhuyenMai(rs.getString("MaKM"));
-				km.setTenKhuyenMai(rs.getString("TenKM"));
+				km.setMaKhuyenMai(rs.getString("MaKhuyenMai"));
+				km.setTenKhuyenMai(rs.getString("TenKhuyenMai"));
 				km.setNgayBatDau(rs.getString("NgayBatDau"));
 				km.setNgayKetThuc(rs.getString("NgayKetThuc"));
 				list.add(km);
@@ -364,9 +349,9 @@ public class panelKhuyenMai extends JPanel {
 	}
 
 	boolean checkMa(String input) {
-		String sql = "SELECT MaKM FROM KhuyenMai;";
+		String sql = "SELECT MaKhuyenMai FROM KhuyenMai;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -417,18 +402,18 @@ public class panelKhuyenMai extends JPanel {
 		} else {
 			lblLoiTen.setText("");
 		}
-//		if (!BatLoi.NamThangNgay(start) || start.equals("")) {
-//			lblStart.setText("Không đúng định dạng năm-tháng-ngày.");
-//			return false;
-//		} else {
-//			lblStart.setText("");
-//		}
-//		if (!BatLoi.NamThangNgay(end) || end.equals("")) {
-//			lblEnd.setText("Không đúng định dạng năm-tháng-ngày.");
-//			return false;
-//		} else {
-//			lblEnd.setText("");
-//		}
+		// if (!BatLoi.NamThangNgay(start) || start.equals("")) {
+		// lblStart.setText("Không đúng định dạng năm-tháng-ngày.");
+		// return false;
+		// } else {
+		// lblStart.setText("");
+		// }
+		// if (!BatLoi.NamThangNgay(end) || end.equals("")) {
+		// lblEnd.setText("Không đúng định dạng năm-tháng-ngày.");
+		// return false;
+		// } else {
+		// lblEnd.setText("");
+		// }
 		if (!formatter(start, end)) {
 			return false;
 		} else {
@@ -450,18 +435,18 @@ public class panelKhuyenMai extends JPanel {
 		} else {
 			lblLoiTen.setText("");
 		}
-//		if (!BatLoi.NamThangNgay(start) || start.equals("")) {
-//			lblStart.setText("Không đúng định dạng năm-tháng-ngày.");
-//			return false;
-//		} else {
-//			lblStart.setText("");
-//		}
-//		if (!BatLoi.NamThangNgay(end) || end.equals("")) {
-//			lblEnd.setText("Không đúng định dạng năm-tháng-ngày.");
-//			return false;
-//		} else {
-//			lblEnd.setText("");
-//		}
+		// if (!BatLoi.NamThangNgay(start) || start.equals("")) {
+		// lblStart.setText("Không đúng định dạng năm-tháng-ngày.");
+		// return false;
+		// } else {
+		// lblStart.setText("");
+		// }
+		// if (!BatLoi.NamThangNgay(end) || end.equals("")) {
+		// lblEnd.setText("Không đúng định dạng năm-tháng-ngày.");
+		// return false;
+		// } else {
+		// lblEnd.setText("");
+		// }
 		if (!formatter(start, end)) {
 			return false;
 		} else {
@@ -477,7 +462,7 @@ public class panelKhuyenMai extends JPanel {
 		String end = Mahoa.dateToString(ngayKetThuc.getDate());
 		if (checkLoi(ma, ten, start, end)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement("insert into KhuyenMai values (?,?,?,?);");
 				ps.setString(1, ma);
 				ps.setString(2, ten);
@@ -507,9 +492,9 @@ public class panelKhuyenMai extends JPanel {
 		String end = Mahoa.dateToString(ngayKetThuc.getDate());
 		if (checkLoiUpdate(ma, ten, start, end)) {
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement(
-						"UPDATE KhuyenMai SET TenKM = ?, NgayBatDau = ?, NgayKetThuc = ? WHERE MaKM = ?");
+						"UPDATE KhuyenMai SET TenKM = ?, NgayBatDau = ?, NgayKetThuc = ? WHERE MaKhuyenMai = ?");
 				ps.setString(1, ten);
 				ps.setString(2, start);
 				ps.setString(3, end);
@@ -532,7 +517,7 @@ public class panelKhuyenMai extends JPanel {
 
 	public boolean TimKiem() {
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con
 					.prepareStatement("select * from KhuyenMai WHERE TenKM LIKE '%" + txtTim.getText() + "%'");
 			ResultSet rs = ps.executeQuery();

@@ -1,30 +1,17 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
 import Entity.ChiTietKM;
 import Utils.JDBC;
 import Utils.XImage;
 
+@SuppressWarnings("serial")
 public class ChiTietKhuyenMai extends JFrame {
 
 	private JPanel contentPane;
@@ -220,7 +207,7 @@ public class ChiTietKhuyenMai extends JFrame {
 	void loadArr(String input) {
 		String sql = "SELECT * FROM ChiTietKhuyenMai WHERE MaKM = '" + input + "';";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
@@ -310,10 +297,10 @@ public class ChiTietKhuyenMai extends JFrame {
 		}
 		if (check) {
 			tileKM = Float.parseFloat(txtTiLeKM.getText());
-			String sql = "INSERT INTO ChiTietKhuyenMai(MaKM, MaSP, TiLeKM) VALUES('" + maKM + "', '" + maSP + "', '"
+			String sql = "INSERT INTO ChiTietKM(MaKM, MaSP, TiLeKM) VALUES('" + maKM + "', '" + maSP + "', '"
 					+ tileKM + "');";
 			try {
-				Connection con = DriverManager.getConnection(JDBC.url());
+				Connection con = JDBC.getConnection();
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.executeUpdate();
 				ps.close();
@@ -330,7 +317,7 @@ public class ChiTietKhuyenMai extends JFrame {
 	boolean checkMa(String input) {
 		String sql = "SELECT MaSP FROM SanPham;";
 		try {
-			Connection con = DriverManager.getConnection(JDBC.url());
+			Connection con = JDBC.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
